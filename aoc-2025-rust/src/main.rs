@@ -1,4 +1,4 @@
-mod giftshop;
+mod gift_shop;
 mod secret_entrance;
 
 fn main() {
@@ -15,7 +15,7 @@ fn main() {
             println!("The secret entrance code is {}!", code);
         }
         "2" => {
-            let invalid_id_sum = giftshop::giftshop("inputs/day2.txt");
+            let invalid_id_sum = gift_shop::giftshop("inputs/day2.txt");
             println!("The sum of invalid ids is {}!", invalid_id_sum);
         }
         _ => {

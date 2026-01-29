@@ -14,17 +14,39 @@ pub fn giftshop(inputfile: &str) -> u64 {
 
         for id in lower_bound..(upper_bound + 1) {
             let id_string = id.to_string();
-            if id_string.len() % 2 == 1 {
-                continue;
-            }
-
-            let mid = id_string.len() / 2;
-            let (left, right) = id_string.split_at(mid);
-            if left == right {
+            if check_invalid_id(&id_string) {
                 result += id;
             }
         }
     }
 
     result
+}
+
+fn split_string_chunks(s: &str, i: usize) -> Vec<String> {
+    s.chars()
+        .collect::<Vec<_>>()
+        .chunks(i)
+        .map(|chunk| chunk.iter().collect())
+        .collect()
+}
+
+fn check_invalid_id(id: &str) -> bool {
+    let id_len = id.len();
+
+    for len in 1..id_len {
+        let chunks = split_string_chunks(id, len);
+        if all_chunks_equal(&chunks) {
+            return true;
+        }
+    }
+    false
+}
+
+fn all_chunks_equal(chunks: &[String]) -> bool {
+    if let Some(first) = chunks.first() {
+        chunks.iter().all(|chunk| chunk == first)
+    } else {
+        true
+    }
 }
