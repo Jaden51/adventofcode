@@ -1,4 +1,5 @@
 mod gift_shop;
+mod lobby;
 mod secret_entrance;
 
 fn main() {
@@ -17,6 +18,10 @@ fn main() {
         "2" => {
             let invalid_id_sum = gift_shop::giftshop("inputs/day2.txt");
             println!("The sum of invalid ids is {}!", invalid_id_sum);
+        }
+        "3" => {
+            let joltage = lobby::lobby("inputs/day3.txt");
+            println!("The joltage needed to start the stairs is {}!", joltage);
         }
         _ => {
             eprintln!("Day not found {}", args[1]);
