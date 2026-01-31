@@ -1,5 +1,6 @@
 mod gift_shop;
 mod lobby;
+mod printing_department;
 mod secret_entrance;
 
 fn main() {
@@ -22,6 +23,10 @@ fn main() {
         "3" => {
             let joltage = lobby::lobby("inputs/day3.txt");
             println!("The joltage needed to start the stairs is {}!", joltage);
+        }
+        "4" => {
+            let rolls = printing_department::printing_department("inputs/day4.txt");
+            println!("The number of rolls we can collect is {}!", rolls);
         }
         _ => {
             eprintln!("Day not found {}", args[1]);
