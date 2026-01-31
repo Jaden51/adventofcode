@@ -22,19 +22,19 @@ pub fn printing_department(inputfile: &str) -> usize {
         .lines()
         .map(|line| line.chars().collect())
         .collect();
+
     loop {
-        let (rolls_removed, new_map) = remove_rolls(map);
+        let rolls_removed = remove_rolls(&mut map);
         if rolls_removed == 0 {
             break;
         }
 
         result += rolls_removed;
-        map = new_map;
     }
     result
 }
 
-pub fn remove_rolls(mut map: Vec<Vec<char>>) -> (usize, Vec<Vec<char>>) {
+pub fn remove_rolls(map: &mut [Vec<char>]) -> usize {
     let rows = map.len();
     let cols = map[0].len();
     let mut rolls_removed: usize = 0;
@@ -45,20 +45,20 @@ pub fn remove_rolls(mut map: Vec<Vec<char>>) -> (usize, Vec<Vec<char>>) {
             if map[r][c] == ROLL {
                 let mut roll_count = 0;
 
-                for d in DIRECTIONS {
-                    let dir_row: isize = d[0];
-                    let dir_col: isize = d[1];
-                    let check_row = r as isize + dir_row;
-                    let check_col = c as isize + dir_col;
-
-                    if check_row < 0
-                        || check_row >= rows as isize
-                        || check_col < 0
-                        || check_col >= cols as isize
-                    {
+                for [dir_row, dir_col] in DIRECTIONS {
+                    let Some(check_row) = r.checked_add_signed(dir_row) else {
                         continue;
-                    }
-                    if map[check_row as usize][check_col as usize] == ROLL {
+                    };
+                    let Some(check_col) = c.checked_add_signed(dir_col) else {
+                        continue;
+                    };
+                    let Some(row) = map.get(check_row) else {
+                        continue;
+                    };
+                    let Some(&cell) = row.get(check_col) else {
+                        continue;
+                    };
+                    if cell == ROLL {
                         roll_count += 1;
                     }
                 }
@@ -73,5 +73,5 @@ pub fn remove_rolls(mut map: Vec<Vec<char>>) -> (usize, Vec<Vec<char>>) {
     for (r, c) in to_remove {
         map[r][c] = OPEN_SPACE;
     }
-    (rolls_removed, map)
+    rolls_removed
 }
